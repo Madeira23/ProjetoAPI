@@ -9,9 +9,20 @@ xhr.onload = function() {
   for(const item in result){
     const value = result[`${item}`];
     const p = document.createElement('p');
+
     cnt.appendChild( p );
     p.textContent = item + " ➜ " + value.eur + "; " + value.eur_24h_change;
     p.className = "currency";
+
+    let spanMoeda = document.createElement('span');
+    spanMoeda.setAttribute('class', 'moeda');
+    spanMoeda.textContent = item; // nome da moeda
+    p.appendChild( spanMoeda );
+
+    //let spanValor = document.createElement('span');
+    //spanValor.setAttribute('class', 'valor');
+    //spanValor.textContent = item; // valor da moeda
+    //p.appendChild( spanValor ); 
 
     const logoDiv = document.createElement('div');
     logoDiv.className = 'coin-logo';
