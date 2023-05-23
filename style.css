@@ -3,9 +3,8 @@ body{
   height: 100vh;
   margin: 0;
   background-color:#161616;
-  justify-content: center;
   display: flex;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .container{
@@ -15,6 +14,8 @@ body{
   display: flex;
   flex-direction: column !important;
   align-items: center;
+  justify-content: center;
+  margin: auto 0;
   margin: 0;
 }
 
@@ -78,4 +79,24 @@ body{
 
 .currency-coin{
   font-size: 14pt;
+}
+
+.container2 label {
+  color: white;
+}
+
+.div-content{
+  width: 100%;
+  display: flex;
+}
+
+.div-inputs{
+  width: fit-content;
+  display: flex;
+  margin: 0.5rem 1rem;
+}
+
+.div-inputs input {
+  margin-left: .25rem;
+  margin-right: .25rem;
 }

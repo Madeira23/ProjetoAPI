@@ -7,6 +7,7 @@ xhr.onload = function() {
   const result = this.response;
   console.log(result);
   for(const item in result){
+    const divContent = document.createElement('div');
     const value = result[`${item}`];
     const divMain = document.createElement('div');
 
@@ -50,21 +51,47 @@ xhr.onload = function() {
 
     // Adicionar o parágrafo ao elemento cnt
     divMain.appendChild(divValues);
-    cnt.appendChild(divMain);
-
+    
     // Adicionar as classes aos elementos conforme necessário
     divMain.classList.add('currency');
-
+    
     //let spanMoeda = document.createElement('span');
     //spanMoeda.setAttribute('class', 'moeda');
     //spanMoeda.textContent = item; // nome da moeda
     //p.appendChild(spanMoeda);
-
+    
     if (value.eur_24h_change < 0) {
       divMain.classList.add("negative-change");
     } else if (value.eur_24h_change > 0) {
       divMain.classList.add("positive-change");
     }
+    
+    const inputInicial = document.createElement('input');
+    inputInicial.type = 'number';
+    inputInicial.value = 1
+    
+    const inputConvertido = document.createElement('input');
+    inputConvertido.type = 'number';
+    inputConvertido.value = value.eur;
+    
+    inputInicial.addEventListener('change', ()=>{
+      inputConvertido.value = inputInicial.value * value.eur;
+    });
+
+    const inputDivs = document.createElement('div');
+    
+    inputDivs.appendChild(inputInicial);
+    inputDivs.appendChild(inputConvertido);
+
+    inputDivs.className = "div-inputs"
+
+    divContent.appendChild(divMain);
+    divContent.appendChild(inputDivs);
+
+    divContent.className = "div-content"
+
+    cnt.appendChild(divContent);
+
   }
 };
 xhr.send();
