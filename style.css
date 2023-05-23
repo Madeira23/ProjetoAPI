@@ -45,25 +45,9 @@ body{
 .positive-change {
   color: green;
 }
-/*
-.currency {
-  display: flex;
-  align-items: center;
+.eur-value{ 
+  color: rgb(54, 54, 122);
 }
-
-.coin-logo {
-  margin-right: 10px;
+.currency-name{
+  color: black;
 }
-
-.value {
-  margin-right: 10px;
-}
-
-.negative-change {
-  color: red;
-}
-
-.positive-change {
-  color: green;
-}
-*/

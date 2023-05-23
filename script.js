@@ -10,19 +10,34 @@ xhr.onload = function() {
     const value = result[`${item}`];
     const p = document.createElement('p');
 
-    cnt.appendChild( p );
-    p.textContent = item + " ➜ " + value.eur + "; " + value.eur_24h_change;
-    p.className = "currency";
+    // Criar elementos separados para cada parte do texto
+    const currencyName = document.createElement('span');
+    currencyName.textContent = item + " ➜    ";
+    currencyName.className = 'currency-name';
 
-    let spanMoeda = document.createElement('span');
-    spanMoeda.setAttribute('class', 'moeda');
-    spanMoeda.textContent = item; // nome da moeda
-    p.appendChild( spanMoeda );
+    const eurValue = document.createElement('span');
+    eurValue.textContent = value.eur;
+    eurValue.className = 'eur-value';
 
-    //let spanValor = document.createElement('span');
-    //spanValor.setAttribute('class', 'valor');
-    //spanValor.textContent = item; // valor da moeda
-    //p.appendChild( spanValor ); 
+    const eurChange = document.createElement('span');
+    eurChange.textContent = value.eur_24h_change;
+    eurChange.className = 'eur-change';
+
+    // Adicionar os elementos ao parágrafo
+    p.appendChild(currencyName);
+    p.appendChild(eurValue);
+    p.appendChild(eurChange);
+
+    // Adicionar o parágrafo ao elemento cnt
+    cnt.appendChild(p);
+
+    // Adicionar as classes aos elementos conforme necessário
+    p.classList.add('currency');
+
+    //let spanMoeda = document.createElement('span');
+    //spanMoeda.setAttribute('class', 'moeda');
+    //spanMoeda.textContent = item; // nome da moeda
+    //p.appendChild(spanMoeda);
 
     const logoDiv = document.createElement('div');
     logoDiv.className = 'coin-logo';
@@ -32,6 +47,8 @@ xhr.onload = function() {
     logoImg.style.height = '25px';
     logoDiv.appendChild(logoImg);
     p.appendChild(logoDiv);
+
+    
 
     if (value.eur_24h_change < 0) {
       p.classList.add("negative-change");
@@ -43,4 +60,3 @@ xhr.onload = function() {
 xhr.send();
 
 const cnt = document.querySelector('.container');
-
