@@ -1,14 +1,25 @@
-.container{
+body{
   width: 100vw;
   height: 100vh;
+  margin: 0;
+  background-color:#161616;
+  justify-content: center;
+  display: flex;
+  overflow: hidden;
+}
+
+.container{
+  width: fit-content;
+  height: min-content;
+  margin-top: 1rem !important;
   display: flex;
   flex-direction: column !important;
   align-items: center;
   margin: 0;
-
 }
 
 .currency{
+  width: 100%;
   padding: .75rem;
   background-color: whitesmoke !important;
   border-radius: 0.5rem;
@@ -16,11 +27,7 @@
   font-weight: bold;
   font-size: 16px;
   color: #333;
-  
-}
-body{
-  height: 100vh;
-  background-color:#161616;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   display: flex;
@@ -28,7 +35,8 @@ body{
   
 
 .coin-logo{
-  width: 80px;
+  min-width: 50px;
+  width: auto;
   height: 100%;
   display: grid;
   place-items: center;
@@ -45,9 +53,29 @@ body{
 .positive-change {
   color: green;
 }
-.eur-value{ 
+.eur-value{
+  font-size: 12.5pt;
   color: rgb(54, 54, 122);
 }
+
+.eur-change{
+  font-size: 10.5pt;
+  opacity: .75;
+}
+
 .currency-name{
   color: black;
+}
+
+.div-values{
+  display: flex;
+  flex-direction: column;
+}
+
+.separator {
+  margin: 0 7.5px;
+}
+
+.currency-coin{
+  font-size: 14pt;
 }
