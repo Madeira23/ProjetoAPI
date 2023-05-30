@@ -68,14 +68,18 @@ xhr.onload = function() {
     
     const inputInicial = document.createElement('input');
     inputInicial.type = 'number';
-    inputInicial.value = 1
+    inputInicial.valueMin = 1;
+    inputInicial.value = 1;
     
     const inputConvertido = document.createElement('input');
-    inputConvertido.type = 'number';
-    inputConvertido.value = value.eur;
+    inputConvertido.type = 'text';
+    inputConvertido.disabled = true;
+    inputConvertido.value = value.eur + "€";
     
     inputInicial.addEventListener('change', ()=>{
-      inputConvertido.value = inputInicial.value * value.eur;
+      let v = parseInt(inputInicial.value);
+      if (v < 1) inputInicial.value = 1;
+      inputConvertido.value = inputInicial.value * value.eur + "€";
     });
 
     const inputDivs = document.createElement('div');
