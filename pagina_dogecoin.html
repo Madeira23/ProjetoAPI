@@ -1,0 +1,152 @@
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Dogecoin - Valores e História</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #333;
+      color: black;
+      margin: 0;
+    }
+    
+    .coin-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border: 1px solid #ccc;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      background-color: rgb(192, 192, 194);
+      margin: 20px;
+    }
+          
+          .coin-logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+          }
+          
+          .coin-history {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: black;
+          }
+          
+          canvas {
+            max-width: 400px;
+            max-height: 300px;
+            width: 100%;
+            height: 100%;
+          }
+          
+          footer {
+            text-align: center;
+            margin-top: 20px;
+          }
+          
+          .btn-back {
+            padding: 10px 20px;
+            background-color: #36a2eb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="coin-container">
+          <img class="coin-logo" src="images/dogecoin.png" alt="Dogecoin Logo">
+          <h1>Dogecoin</h1>
+          <p class="coin-history">
+            <p class="coin-history">
+              Dogecoin é uma criptomoeda criada em 2013 por Billy Markus e Jackson Palmer como uma brincadeira baseada no meme do cão Shiba Inu "Doge". No entanto, apesar das suas origens divertidas, a Dogecoin ganhou uma comunidade de seguidores leais e tem sido amplamente adotado.
+              <br><br>
+              Dogecoin é conhecida pela sua comunidade engajada e por sua participação em várias ações de caridade e campanhas de financiamento coletivo. A moeda ganhou destaque em 2021 devido ao seu aumento repentino de valor e ao apoio de figuras influentes, como Elon Musk.
+              <br><br>
+              Embora muitos vejam a Dogecoin como uma criptomoeda de valor especulativo, ela também é usado como uma forma de doação e microtransações. O seu símbolo, o famoso Shiba Inu, tornou-se um ícone reconhecível no mundo das criptomoedas.
+            </p>
+          <canvas id="dogecoinChart"></canvas>
+        </div>
+        <footer>
+          <button class="btn-back" onclick="window.location.href = 'index.html'">Voltar para a página inicial</button>
+        </footer>
+        
+        <script>
+          const apiKey = "https://api.coingecko.com/api/v3/coins/dogecoin/market_chart?vs_currency=eur&days=30&interval=daily";
+      
+          function fetchDogecoinData(callback) {
+            fetch(apiKey)
+              .then(response => response.json())
+              .then(data => {
+                console.log(data);
+                
+                const prices = data.prices;
+                const days = data.prices.length;
+      
+                callback(prices, days);
+              })
+              .catch(error => {
+                console.log("Erro na requisição:", error);
+              });
+          }
+      
+          function createChart(prices, days) {
+            const ctx = document.getElementById('dogecoinChart').getContext('2d');
+      
+            const labels = prices.map((_, index) => `Day ${index + 1}`);
+      
+            const chart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: 'Variação dos valores do Dogecoin',
+                  data: prices,
+                  borderColor: '#36a2eb',
+                  fill: false
+                }]
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      callback: function(value) {
+                        return value.toFixed(2) + '€'; // Adicione o símbolo do euro após os valores
+                      }
+                    }
+                  }
+                },
+                plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: function(context) {
+                        const label = context.dataset.label || '';
+                        const value = context.parsed.y || 0;
+                        return label + ': ' + value.toFixed(2) + '€'; // Adicione o símbolo do euro após os valores
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          }
+      
+          window.onload = function() {
+            fetchDogecoinData(createChart);
+          };
+        </script>
+      </body>
+      </html>
+             

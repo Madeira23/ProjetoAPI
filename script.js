@@ -18,6 +18,11 @@ xhr.onload = function() {
     logoImg.style.width = '30px';
     logoImg.style.height = '30px';
     logoDiv.appendChild(logoImg);
+
+    divMain.addEventListener('click', function() {
+      window.location.href = `pagina_${item}.html`;
+    });
+
     divMain.appendChild(logoDiv);
     
     // Criar elementos separados para cada parte do texto

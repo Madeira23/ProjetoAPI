@@ -1,0 +1,152 @@
+
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Litecoin - Valores e História</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+          body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #333;
+      color: black;
+      margin: 0;
+    }
+    
+    .coin-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border: 1px solid #ccc;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      background-color: rgb(192, 192, 194);
+      margin: 20px;
+    }
+          
+          .coin-logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+          }
+          
+          .coin-history {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: black;
+          }
+          
+          canvas {
+            max-width: 400px;
+            max-height: 300px;
+            width: 100%;
+            height: 100%;
+          }
+          
+          footer {
+            text-align: center;
+            margin-top: 20px;
+          }
+          
+          .btn-back {
+            padding: 10px 20px;
+            background-color: #36a2eb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="coin-container">
+          <img class="coin-logo" src="images/litecoin.png" alt="Litecoin Logo">
+          <h1>Litecoin</h1>
+            <p class="coin-history">
+            Litecoin é uma criptomoeda baseada em código aberto que foi lançada em 2011 por Charlie Lee, um ex-funcionário do Google. Ela foi criada com base no código do Bitcoin, mas com algumas modificações para melhorar a eficiência e velocidade das transações.
+            <br><br>
+            A Litecoin é conhecida como "prata digital" em contraste com o "ouro digital" da Bitcoin. Ela usa um algoritmo de prova do trabalho chamado Scrypt, que permite uma mineração mais acessível em comparação com o algoritmo SHA-256 usado pela Bitcoin.
+            <br><br>
+            A moeda nativa da Litecoin é chamada de LTC. Assim como outras criptomoedas, o Litecoin pode ser usado para transações peer-to-peer, investimento e como uma reserva de valor alternativa. Ela ganhou popularidade ao longo dos anos e é amplamente aceito em várias plataformas de pagamento e exchanges.
+          </p>
+          <canvas id="litecoinChart"></canvas>
+        </div>
+        <footer>
+          <button class="btn-back" onclick="window.location.href = 'index.html'">Voltar para a página inicial</button>
+        </footer>
+        
+        <script>
+          const apiKey = "https://api.coingecko.com/api/v3/coins/litecoin/market_chart?vs_currency=eur&days=30&interval=daily";
+      
+          function fetchLitecoinData(callback) {
+            fetch(apiKey)
+              .then(response => response.json())
+              .then(data => {
+                console.log(data);
+                
+                const prices = data.prices;
+                const days = data.prices.length;
+      
+                callback(prices, days);
+              })
+              .catch(error => {
+                console.log("Erro na requisição:", error);
+              });
+          }
+      
+          function createChart(prices, days) {
+            const ctx = document.getElementById('litecoinChart').getContext('2d');
+      
+            const labels = prices.map((_, index) => `Day ${index + 1}`);
+      
+            const chart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: 'Variação dos valores do Litecoin',
+                  data: prices,
+                  borderColor: '#36a2eb',
+                  fill: false
+                }]
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      callback: function(value) {
+                        return value.toFixed(2) + '€'; // Adicione o símbolo do euro após os valores
+                      }
+                    }
+                  }
+                },
+                plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: function(context) {
+                        const label = context.dataset.label || '';
+                        const value = context.parsed.y || 0;
+                        return label + ': ' + value.toFixed(2) + '€'; // Adicione o símbolo do euro após os valores
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          }
+      
+          window.onload = function() {
+            fetchLitecoinData(createChart);
+          };
+        </script>
+      </body>
+      </html>
+      

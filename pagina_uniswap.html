@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Uniswap - Valores e História</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #333;
+      color: black;
+      margin: 0;
+    }
+    
+    .coin-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border: 1px solid #ccc;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      background-color: rgb(192, 192, 194);
+      margin: 20px;
+    }
+    
+    .coin-logo {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+    }
+    
+    .coin-history {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      color: black;
+    }
+    
+    canvas {
+      max-width: 400px;
+      max-height: 300px;
+      width: 100%;
+      height: 100%;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .btn-back {
+      padding: 10px 20px;
+      background-color: #36a2eb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="coin-container">
+    <img class="coin-logo" src="images/uniswap.png" alt="Uniswap Logo">
+    <h1>Uniswap</h1>
+    <p class="coin-history">
+      Uniswap é um protocolo descentralizado de troca de criptomoedas construído na blockchain Ethereum. Ele permite a troca direta de tokens ERC-20, sem a necessidade de intermediários ou ordens de compra/venda.
+      <br><br>
+      O Uniswap utiliza pools de liquidez, onde os usuários podem adicionar fundos para fornecer liquidez aos pares de tokens. Os traders podem então trocar seus tokens diretamente nesses pools, com base na proporção de liquidez disponível.
+      <br><br>
+      O token nativo do Uniswap é chamado UNI. Ele desempenha um papel importante no ecossistema do Uniswap, permitindo a participação na governança do protocolo e fornecendo benefícios aos detentores. O Uniswap ganhou destaque como uma das principais plataformas de troca descentralizada no espaço das criptomoedas.
+    </p>
+    <canvas id="uniswapChart"></canvas>
+  </div>
+  <footer>
+    <button class="btn-back" onclick="window.location.href = 'index.html'">Voltar para a página inicial</button>
+  </footer>
+  
+  <script>
+    const apiKey = "https://api.coingecko.com/api/v3/coins/uniswap/market_chart?vs_currency=eur&days=30&interval=daily";
+
+    function fetchUniswapData(callback) {
+      fetch(apiKey)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          
+          const prices = data.prices;
+          const days = data.prices.length;
+
+          callback(prices, days);
+        })
+        .catch(error => {
+          console.log("Erro na requisição:", error);
+        });
+    }
+
+    function createChart(prices, days) {
+      const ctx = document.getElementById('uniswapChart').getContext('2d');
+
+      const labels = prices.map((_, index) => `Day ${index + 1}`);
+
+      const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Variação dos valores do Uniswap',
+            data: prices,
+            borderColor: '#36a2eb',
+            fill: false
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return value.toFixed(2) + '€'; // Adicione o símbolo do euro após os valores
+                }
+              }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.dataset.label || '';
+                  const value = context.parsed.y || 0;
+                  return label + ': ' + value.toFixed(2) + '€'; // Adicione o símbolo do euro após os valores
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    window.onload = function() {
+      fetchUniswapData(createChart);
+    };
+  </script>
+</body>
+</html>

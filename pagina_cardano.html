@@ -1,0 +1,150 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <title>Cardano - Valores e História</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #333;
+      color: black;
+      margin: 0;
+    }
+    
+    .coin-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border: 1px solid #ccc;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      background-color: rgb(192, 192, 194);
+      margin: 20px;
+    }
+    
+    .coin-logo {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+    }
+    
+    .coin-history {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      color: black;
+    }
+    
+    canvas {
+      max-width: 400px;
+      max-height: 300px;
+      width: 100%;
+      height: 100%;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .btn-back {
+      padding: 10px 20px;
+      background-color: #36a2eb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="coin-container">
+    <img class="coin-logo" src="images/cardano.png" alt="Cardano Logo">
+    <h1>Cardano</h1>
+    <p class="coin-history">
+      Cardano é uma plataforma blockchain de código aberto que busca fornecer uma infraestrutura segura e escalonável para o desenvolvimento de aplicativos descentralizados (dApps) e contratos inteligentes. Foi criada por Charles Hoskinson, um dos co-fundadores da Ethereum.
+      <br><br>
+      A tecnologia por trás do Cardano é baseada em pesquisa académica e desenvolvimento científico. Ela esforça-se para combinar segurança e sustentabilidade, usando uma abordagem de camadas para separar as diferentes partes do sistema.
+      <br><br>
+      A moeda nativa da Cardano é chamada de ADA. Ela é usada para alimentar a plataforma e executar transações dentro do ecossistema da Cardano. A Cardano ganhou popularidade como uma plataforma de blockchain inovadora e tem uma comunidade ativa de desenvolvedores e entusiastas.
+    </p>
+    <canvas id="cardanoChart"></canvas>
+  </div>
+  <footer>
+    <button class="btn-back" onclick="window.location.href = 'index.html'">Voltar para a página inicial</button>
+  </footer>
+  
+  <script>
+    const apiKey = "https://api.coingecko.com/api/v3/coins/cardano/market_chart?vs_currency=eur&days=30&interval=daily";
+
+    function fetchCardanoData(callback) {
+      fetch(apiKey)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          
+          const prices = data.prices;
+          const days = data.prices.length;
+
+          callback(prices, days);
+        })
+        .catch(error => {
+          console.log("Erro na requisição:", error);
+        });
+    }
+
+    function createChart(prices, days) {
+      const ctx = document.getElementById('cardanoChart').getContext('2d');
+
+      const labels = prices.map((_, index) => `Day ${index + 1}`);
+
+      const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Variação dos valores do Cardano',
+            data: prices,
+            borderColor: '#36a2eb',
+            fill: false
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return value.toFixed(2) + '€'; // Adicione o símbolo do euro após os valores
+                }
+              }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.dataset.label || '';
+                  const value = context.parsed.y || 0;
+                  return label + ': ' + value.toFixed(2) + '€'; // Adicione o símbolo do euro após os valores
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    window.onload = function() {
+      fetchCardanoData(createChart);
+    };
+  </script>
+</body>
+</html>
